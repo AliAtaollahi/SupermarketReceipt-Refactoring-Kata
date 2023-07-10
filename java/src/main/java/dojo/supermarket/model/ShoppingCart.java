@@ -42,34 +42,36 @@ public class ShoppingCart {
                 Discount discount = null;
                 int numOfBoughtProducts = 1;
                 int boughtProductsRatio = quantityAsInt / numOfBoughtProducts;
-                if (offer.offerType == SpecialOfferType.THREE_FOR_TWO) {
-                    numOfBoughtProducts = 3;
-
-                } else if (offer.offerType == SpecialOfferType.TWO_FOR_AMOUNT) {
-                    numOfBoughtProducts = 2;
-                    if (quantityAsInt >= numOfBoughtProducts) {
-                        double total = offer.argument * (quantityAsInt / numOfBoughtProducts) + quantityAsInt % numOfBoughtProducts * unitPrice;
-                        double discountN = unitPrice * quantity - total;
-                        discount = new Discount(p, numOfBoughtProducts + " for " + offer.argument, -discountN);
-                    }
-
-                } if (offer.offerType == SpecialOfferType.FIVE_FOR_AMOUNT) {
-                    numOfBoughtProducts = 5;
-                }
-                if (offer.offerType == SpecialOfferType.THREE_FOR_TWO && quantityAsInt > (numOfBoughtProducts - 1)) {
-                    double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % numOfBoughtProducts * unitPrice);
-                    discount = new Discount(p, numOfBoughtProducts + " for 2", -discountAmount);
-                }
+                
                 if (offer.offerType == SpecialOfferType.TEN_PERCENT_DISCOUNT) {
                     discount = new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
                 }
-                if (offer.offerType == SpecialOfferType.FIVE_FOR_AMOUNT && quantityAsInt >= numOfBoughtProducts) {
-                    double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % numOfBoughtProducts * unitPrice);
-                    discount = new Discount(p, numOfBoughtProducts + " for " + offer.argument, -discountTotal);
+                else {
+                    double offer_amount = 0;
+                    double price_coefficient = 1;
+                    if (offer.offerType == SpecialOfferType.THREE_FOR_TWO){
+                        numOfBoughtProducts  = 3;
+                        offer_amount = 2;
+                        price_coefficient = unitPrice;
+                    }
+                    else if (offer.offerType == SpecialOfferType.TWO_FOR_AMOUNT) {
+                        numOfBoughtProducts = 2;
+                        offer_amount = offer.argument;
+                    }
+                    else if (offer.offerType == SpecialOfferType.FIVE_FOR_AMOUNT) {
+                        numOfBoughtProducts  = 5;
+                        offer_amount = offer.argument;
+                    }
+                    if (quantityAsInt >= numOfBoughtProducts) {
+                        double discountTotal = unitPrice * quantity - (offer_amount * boughtProductsRatio * price_coefficient + quantityAsInt % numOfBoughtProducts * unitPrice);
+                        discount = new Discount(p, numOfBoughtProducts  + " for " + offer_amount, -discountTotal);
+                    }
                 }
+
                 if (discount != null)
                     receipt.addDiscount(discount);
             }
+
         }
     }
 }

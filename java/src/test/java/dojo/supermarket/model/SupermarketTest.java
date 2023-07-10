@@ -14,7 +14,7 @@ public class SupermarketTest {
 
     @Test
     public void tenPercentDiscount() {
-        SupermarketCatalog catalog = new FakeCatalog();
+        SupermarketCatalog catalog = new SupermarketCatalog();
         Product toothbrush = new Product("toothbrush", ProductUnit.EACH);
         catalog.addProduct(toothbrush, 0.99);
         Product apples = new Product("apples", ProductUnit.KILO);

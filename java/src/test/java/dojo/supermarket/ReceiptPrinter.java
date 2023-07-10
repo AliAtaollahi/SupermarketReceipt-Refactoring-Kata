@@ -28,7 +28,7 @@ public class ReceiptPrinter {
         }
 
         result.append("\n");
-        result.append(presentTotal(receipt));
+        result.append(receipt.presentTotal());
         return result.toString();
     }
 
@@ -48,12 +48,6 @@ public class ReceiptPrinter {
         String name = discount.getDescription() + "(" + discount.getProduct().getName() + ")";
         String value = presentPrice(discount.getDiscountAmount());
 
-        return formatLineWithWhitespace(name, value);
-    }
-
-    private String presentTotal(Receipt receipt) {
-        String name = "Total: ";
-        String value = presentPrice(receipt.getTotalPrice());
         return formatLineWithWhitespace(name, value);
     }
 

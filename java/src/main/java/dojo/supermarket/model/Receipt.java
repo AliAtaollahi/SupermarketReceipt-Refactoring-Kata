@@ -20,6 +20,12 @@ public class Receipt {
         return total;
     }
 
+    private String presentTotal() {
+        String name = "Total: ";
+        String value = presentPrice(this.getTotalPrice());
+        return formatLineWithWhitespace(name, value);
+    }
+
     public void addProduct(Product p, double quantity, double price) {
         items.add(new ReceiptItem(p, quantity, price));
     }
